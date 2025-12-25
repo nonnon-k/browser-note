@@ -2,55 +2,69 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>シンプルメモ</title>
+  <title>描くメモ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      padding: 16px;
+      margin: 0;
+      background: #fff;
+      touch-action: none;
     }
-    .memo {
-      width: 100%;
-      min-height: 6em; /* 行数っぽい指定 */
-      border: 1px solid #ccc;
-      padding: 8px;
-      margin-bottom: 12px;
-      font-size: 16px;
-      box-sizing: border-box;
-      outline: none;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .memo:empty:before {
-      content: "メモ";
-      color: #999;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
+    canvas {
+      display: block;
     }
   </style>
 </head>
 <body>
 
-  <div id="container">
-    <div class="memo" contenteditable="true"></div>
-  </div>
+<canvas id="canvas"></canvas>
 
-  <button id="addBtn">下に追加</button>
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
 
-  <script>
-    const container = document.getElementById('container');
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-    document.getElementById('addBtn').onclick = () => {
-      const memo = document.createElement('div');
-      memo.className = 'memo';
-      memo.contentEditable = 'true';
-      container.appendChild(memo);
-      memo.scrollIntoView({ behavior: 'smooth' });
-      memo.focus();
-    };
-  </script>
+  let drawing = false;
+
+  function pos(e) {
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX, y: t.clientY };
+  }
+
+  function start(e) {
+    drawing = true;
+    const p = pos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+  }
+
+  function move(e) {
+    if (!drawing) return;
+    const p = pos(e);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+  }
+
+  function end() {
+    drawing = false;
+  }
+
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start);
+  canvas.addEventListener('touchmove', move);
+  canvas.addEventListener('touchend', end);
+</script>
 
 </body>
 </html>
