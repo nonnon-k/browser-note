@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      font-family: sans-serif;
-      padding: 16px;
+      /* font-family: sans-serif; */
+      /* padding: 16px; */
     }
     textarea {
       width: 100%;
       box-sizing: border-box;
-      margin-bottom: 12px;
-      font-size: 16px; /* スマホでズームされにくい */
+      /* margin-bottom: 12px;
+      font-size: 16px;  */
     }
     button {
       width: 100%;
@@ -25,10 +25,10 @@
 <body>
 
   <div id="container">
-    <textarea rows="5" placeholder="メモ"></textarea>
+    <textarea rows="5" placeholder=""></textarea>
   </div>
 
-  <button id="addBtn">下に追加</button>
+  <button id="addBtn">追加</button>
 
   <script>
     const container = document.getElementById('container');
@@ -37,7 +37,7 @@
     addBtn.addEventListener('click', () => {
       const textarea = document.createElement('textarea');
       textarea.rows = 5;
-      textarea.placeholder = 'メモ';
+      textarea.placeholder = '';
       container.appendChild(textarea);
       textarea.scrollIntoView({ behavior: 'smooth' });
       textarea.focus();
