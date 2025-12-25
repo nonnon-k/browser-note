@@ -3,16 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>シンプルメモ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: sans-serif; padding: 20px; }
-    textarea { display: block; width: 90%; height: 100px; margin: 10px 0; }
-    button { padding: 8px 12px; font-size: 16px; }
+    body {
+      font-family: sans-serif;
+      padding: 16px;
+    }
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+      font-size: 16px; /* スマホでズームされにくい */
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
 
-  <button id="addBtn">テキストボックスを追加</button>
-  <div id="container"></div>
+  <div id="container">
+    <textarea rows="5" placeholder="メモ"></textarea>
+  </div>
+
+  <button id="addBtn">下に追加</button>
 
   <script>
     const container = document.getElementById('container');
@@ -20,7 +36,10 @@
 
     addBtn.addEventListener('click', () => {
       const textarea = document.createElement('textarea');
+      textarea.rows = 5;
+      textarea.placeholder = 'メモ';
       container.appendChild(textarea);
+      textarea.scrollIntoView({ behavior: 'smooth' });
       textarea.focus();
     });
   </script>
