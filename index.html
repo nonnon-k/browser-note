@@ -2,68 +2,33 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>描くメモ</title>
+  <title>貼るだけメモ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
+    html, body {
       margin: 0;
-      background: #fff;
-      touch-action: none;
+      padding: 16px;
+      font-family: sans-serif;
+      font-size: 16px;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
-    canvas {
-      display: block;
+    body {
+      outline: none;
     }
   </style>
 </head>
-<body>
+<body contenteditable="true">
 
-<canvas id="canvas"></canvas>
+
 
 <script>
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  let drawing = false;
-
-  function pos(e) {
-    const t = e.touches ? e.touches[0] : e;
-    return { x: t.clientX, y: t.clientY };
-  }
-
-  function start(e) {
-    drawing = true;
-    const p = pos(e);
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-  }
-
-  function move(e) {
-    if (!drawing) return;
-    const p = pos(e);
-    ctx.lineTo(p.x, p.y);
-    ctx.stroke();
-  }
-
-  function end() {
-    drawing = false;
-  }
-
-  ctx.lineWidth = 2;
-  ctx.lineCap = 'round';
-
-  canvas.addEventListener('mousedown', start);
-  canvas.addEventListener('mousemove', move);
-  canvas.addEventListener('mouseup', end);
-  canvas.addEventListener('touchstart', start);
-  canvas.addEventListener('touchmove', move);
-  canvas.addEventListener('touchend', end);
+  document.body.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const text =
+      (e.clipboardData || window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, text);
+  });
 </script>
 
 </body>
