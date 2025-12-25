@@ -1,168 +1,29 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Note</title>
-  <meta name="description" content="メモ" />
+  <meta charset="UTF-8">
+  <title>シンプルメモ</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #eef1f5;
-      margin: 0;
-      padding: 20px;
-    }
-    .app {
-      max-width: 680px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 16px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-    }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    h1 {
-      font-size: 20px;
-      margin: 0;
-    }
-    .hint {
-      font-size: 12px;
-      color: #666;
-    }
-    textarea {
-      width: 100%;
-      min-height: 60px;
-      resize: vertical;
-      padding: 8px 10px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: 1px solid #bbb;
-      box-sizing: border-box;
-    }
-    .controls {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 6px;
-    }
-    button {
-      padding: 6px 12px;
-      font-size: 13px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-    }
-    .add {
-      background: #2563eb;
-      color: #fff;
-    }
-    .note {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 8px 10px;
-      margin-top: 8px;
-      position: relative;
-      font-size: 14px;
-      white-space: pre-wrap;
-    }
-    .note-time {
-      font-size: 11px;
-      color: #888;
-      margin-bottom: 4px;
-    }
-    .delete {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: #dc2626;
-      color: #fff;
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
+    body { font-family: sans-serif; padding: 20px; }
+    textarea { display: block; width: 90%; height: 100px; margin: 10px 0; }
+    button { padding: 8px 12px; font-size: 16px; }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>ブラウザメモ</h1>
-      <div class="hint">自動保存（localStorage）</div>
-    </header>
 
-    <textarea id="input" placeholder="短いメモを書く（例：買い物、TODO）"></textarea>
-    <div class="controls">
-      <button class="add" onclick="addNote()">追加</button>
-    </div>
-
-    <div id="notes"></div>
-  </div>
+  <button id="addBtn">テキストボックスを追加</button>
+  <div id="container"></div>
 
   <script>
-    const STORAGE_KEY = "light_browser_memo_v1";
+    const container = document.getElementById('container');
+    const addBtn = document.getElementById('addBtn');
 
-    function loadNotes() {
-      try {
-        const data = localStorage.getItem(STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function saveNotes(notes) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-    }
-
-    function render() {
-      const notesEl = document.getElementById("notes");
-      notesEl.innerHTML = "";
-      const notes = loadNotes();
-
-      notes.forEach((note, index) => {
-        const div = document.createElement("div");
-        div.className = "note";
-
-        const time = document.createElement("div");
-        time.className = "note-time";
-        time.textContent = new Date(note.time).toLocaleString();
-
-        const text = document.createElement("div");
-        text.textContent = note.text;
-
-        const del = document.createElement("button");
-        del.className = "delete";
-        del.textContent = "×";
-        del.onclick = () => {
-          notes.splice(index, 1);
-          saveNotes(notes);
-          render();
-        };
-
-        div.appendChild(del);
-        div.appendChild(time);
-        div.appendChild(text);
-        notesEl.appendChild(div);
-      });
-    }
-
-    function addNote() {
-      const input = document.getElementById("input");
-      const text = input.value.trim();
-      if (!text) return;
-
-      const notes = loadNotes();
-      notes.unshift({ text, time: Date.now() });
-      saveNotes(notes);
-      input.value = "";
-      render();
-    }
-
-    render();
+    addBtn.addEventListener('click', () => {
+      const textarea = document.createElement('textarea');
+      container.appendChild(textarea);
+      textarea.focus();
+    });
   </script>
+
 </body>
 </html>
