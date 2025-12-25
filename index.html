@@ -6,14 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      /* font-family: sans-serif; */
-      padding: 30px;
+      padding: 16px;
     }
-    textarea {
+    .memo {
       width: 100%;
-      box-sizing: border-box;
+      min-height: 6em; /* 行数っぽい指定 */
+      border: 1px solid #ccc;
+      padding: 8px;
       margin-bottom: 12px;
-      font-size: 16px; 
+      font-size: 16px;
+      box-sizing: border-box;
+      outline: none;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .memo:empty:before {
+      content: "メモ";
+      color: #999;
     }
     button {
       width: 100%;
@@ -25,23 +34,22 @@
 <body>
 
   <div id="container">
-    <textarea rows="5" placeholder=""></textarea>
+    <div class="memo" contenteditable="true"></div>
   </div>
 
-  <button id="addBtn">追加</button>
+  <button id="addBtn">下に追加</button>
 
   <script>
     const container = document.getElementById('container');
-    const addBtn = document.getElementById('addBtn');
 
-    addBtn.addEventListener('click', () => {
-      const textarea = document.createElement('textarea');
-      textarea.rows = 5;
-      textarea.placeholder = '';
-      container.appendChild(textarea);
-      textarea.scrollIntoView({ behavior: 'smooth' });
-      textarea.focus();
-    });
+    document.getElementById('addBtn').onclick = () => {
+      const memo = document.createElement('div');
+      memo.className = 'memo';
+      memo.contentEditable = 'true';
+      container.appendChild(memo);
+      memo.scrollIntoView({ behavior: 'smooth' });
+      memo.focus();
+    };
   </script>
 
 </body>
